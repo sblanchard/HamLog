@@ -65,6 +65,28 @@ CREATE TABLE IF NOT EXISTS `Contest_QSOs` (
   FOREIGN KEY (`CONTEST_ID`) REFERENCES `Contests`(`CONTEST_ID`)
 );
 
+-- This schema is the FINAL shape — it already includes everything migrations
+-- 001-008 would add. Seed the migration tracker so the app's migration runner
+-- doesn't re-apply them against a fresh database (re-applying 001 fails with
+-- "Duplicate column name" and blocks every later migration from ever running).
+-- Keep this list in sync with MIGRATIONS in src/migrations/migrate.ts whenever
+-- a new migration's effect gets folded into this schema.
+CREATE TABLE IF NOT EXISTS `_migrations` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL UNIQUE,
+  `applied_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO `_migrations` (`name`) VALUES
+  ('001-add-utc-datetime.sql'),
+  ('002-add-frequency-decimal.sql'),
+  ('003-add-mode-band.sql'),
+  ('004-add-users-table.sql'),
+  ('005-add-user-id-to-contacts.sql'),
+  ('006-backfill-user-id.sql'),
+  ('007-user-id-not-null.sql'),
+  ('008-add-contacts-dedup-index.sql');
+
 CREATE TABLE IF NOT EXISTS `ContactInfo` (
   `ContactInfo_ID` INT NOT NULL AUTO_INCREMENT,
   `ContactInfo_Callsign` VARCHAR(10) NOT NULL,
