@@ -15,7 +15,9 @@ import { parseAdif } from '../services/adif-parser.js';
 import { exportAdif } from '../services/adif-exporter.js';
 
 const router = Router();
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
+// No byte cap on uploads (operator decision, 2026-07): full-log ADIF imports exceed
+// any guessed size. MAX_IMPORT_RECORDS in qso-service is the input bound.
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/export', requireAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {

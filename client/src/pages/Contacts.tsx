@@ -5,7 +5,7 @@ import QSOsForParkNumber from './QSOsForParkNumber';
 import CallsignInfo from './CallsignInfo';
 import SearchBar from '../components/SearchBar';
 import SortableHeader from '../components/SortableHeader';
-import { getQsos, deleteQso, exportAdif, importAdif } from '../api/hamlog-api';
+import { getQsos, deleteQso, exportAdif, importAdif, apiErrorMessage } from '../api/hamlog-api';
 import type { Contact, SearchFilters, SortConfig, SortField } from '../types/qso';
 import { defaultSearchFilters } from '../types/qso';
 import { filterQsos } from '../utils/filter-qsos';
@@ -134,8 +134,8 @@ const Contacts = () => {
       }
       alert(msg);
       fetchData();
-    } catch {
-      alert('Import failed.');
+    } catch (err) {
+      alert(apiErrorMessage(err) ?? 'Import failed.');
     }
     if (fileInputRef.current) fileInputRef.current.value = '';
   };

@@ -74,9 +74,9 @@ export interface ImportResult {
 }
 
 // Whole-file cap on the number of records per ADIF import (Data-quality F10). Tunable;
-// overridable via MAX_IMPORT_RECORDS for tests/ops. Not memory protection (the 10 MB
-// multer limit already bounds input) — it gives an early, clear rejection instead of a
-// confusing slow failure on an absurdly large file.
+// overridable via MAX_IMPORT_RECORDS for tests/ops. This is the only input bound —
+// the multer byte cap was removed (it rejected legitimate full-log imports) — so it
+// gives an early, clear rejection instead of a confusing slow failure on a huge file.
 export const MAX_IMPORT_RECORDS = 50000;
 
 export class ImportLimitError extends Error {

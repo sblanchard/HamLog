@@ -25,6 +25,21 @@ client.interceptors.response.use(
   }
 );
 
+/**
+ * Server-provided error message from a failed request, or null if the failure
+ * carried none (network error, crash). Backend errors are sanitized messages
+ * safe to show the user (e.g. the ADIF import record-cap rejection).
+ */
+export function apiErrorMessage(err: unknown): string | null {
+  if (axios.isAxiosError(err)) {
+    const message = err.response?.data?.error;
+    if (typeof message === 'string' && message.length > 0) {
+      return message;
+    }
+  }
+  return null;
+}
+
 interface AuthResponse {
   token: string;
   user: { id: number; username: string; callsign: string };
