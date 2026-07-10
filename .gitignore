@@ -8,6 +8,8 @@ backups/
 !backend/src/migrations/*.sql
 # Demo seed for screenshots — fictional data only, safe to commit.
 !scripts/screenshots/demo-seed.sql
+# One-off dedup script — SQL only, no dumped data.
+!scripts/dedup-tz-shifted-qsos.sql
 .env
 .env.*
 !.env.example
